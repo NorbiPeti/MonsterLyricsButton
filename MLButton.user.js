@@ -19,8 +19,15 @@ function AddIfChanged()
     var cont=document.getElementById("watch7-subscription-container");
     if(cont===null)
         return;
-    cont.innerHTML+="<button type=\"button\" onClick=\"window.showLyrics()\" class=\"yt-uix-button yt-uix-button-size-default yt-uix-button-default\">Show lyrics</button>";
-    window.lasturl=window.location.href;
+    window.setTimeout(function() {
+    if(window.location.href==window.lasturl)
+        return;
+        var cont=document.getElementById("watch7-subscription-container");
+        if(cont===null)
+            return;
+        cont.innerHTML+="<button type=\"button\" onClick=\"window.showLyrics()\" class=\"yt-uix-button yt-uix-button-size-default yt-uix-button-default\">Show lyrics</button>";
+        window.lasturl=window.location.href;
+    }, 2000); //TODO: Detect page load finish
 }
 
 (function() {
@@ -31,7 +38,7 @@ function AddIfChanged()
     if(namecont.innerHTML.indexOf("Monstercat")==-1)
         return;
     AddIfChanged();
-    window.setTimeout(AddIfChanged, 1000);
+    window.setInterval(AddIfChanged, 1000);
 })();
 
 window.showLyrics=function()
