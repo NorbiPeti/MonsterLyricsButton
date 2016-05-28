@@ -1,5 +1,5 @@
 # MonsterLyricsButton
-This userscript adds a button to Monstercat videos that searches for lyrics
+This userscript adds a button to Monstercat videos that searches for lyrics on the MonsterLyrics channel.
 
 ## Installation
 * Install an userscript manager like Tampermonkey on Chrome or Greasemonkey on Firefox if you haven't already
