@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MonsterLyrics button
 // @namespace    https://github.com/NorbiPeti/
-// @version      0.2
+// @version      0.3
 // @description  Creates a button that searches for a lyrics video!
 // @author       NorbiPeti
 // @match        https://www.youtube.com/
