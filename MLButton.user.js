@@ -22,17 +22,16 @@ function AddIfChanged()
     var cont=document.getElementById("watch7-subscription-container");
     if(cont===null)
         return;
-    window.setTimeout(function() {
+    window.setTimeout(function() { //TODO: Check for video title change every 100 ms
     if(window.location.href==window.lasturl)
         return;
-        //var cont=document.getElementById("watch7-subscription-container").childNodes[0];
         var cont=document.getElementById("watch7-subscription-container");
         if(cont===null)
             return;
         cont.innerHTML+="<button type=\"button\" onClick=\"window.showLyrics()\" class=\"yt-uix-button yt-uix-button-size-default yt-uix-button-subscribed-branded no-icon-markup yt-uix-subscription-button yt-can-buffer hover-enabled\">Show lyrics</button>";
         window.lasturl=window.location.href;
     }, 2000); //TODO: Detect page load finish
-}
+} //TODO: Add for every platform, not just YouTube
 
 (function() {
     'use strict';
