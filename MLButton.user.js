@@ -6,11 +6,31 @@
 // @author       NorbiPeti
 // @match        https://www.youtube.com/
 // @include      http://www.youtube.com/*
-// @include      https://www.youtube.com/*
+// @include      https://www.twitch.tv/Monstercat*
+// @include      https://live.monstercat.com/*
 // @grant        none
 // ==/UserScript==
 
 window.lasturl="";
+window.lasttitle="";
+window.addtries=0;
+
+function Add() {
+    var title=document.getElementById("eow-title").title;
+    if(window.location.href==window.lasturl)
+        return;
+    if(title==lasttitle && window.lasttries<10)
+    {
+        window.addtries++;
+        window.setTimeout(Add, 100);
+        return;
+    }
+    var cont=document.getElementById("watch7-subscription-container");
+    if(cont===null)
+        return;
+    cont.innerHTML+="<button type=\"button\" onClick=\"window.showLyrics()\" class=\"yt-uix-button yt-uix-button-size-default yt-uix-button-subscribed-branded no-icon-markup yt-uix-subscription-button yt-can-buffer hover-enabled\">Lyrics video</button>";
+    window.lasturl=window.location.href; //TODO: Show Lyrics button
+}
 
 function AddIfChanged()
 {
@@ -22,15 +42,7 @@ function AddIfChanged()
     var cont=document.getElementById("watch7-subscription-container");
     if(cont===null)
         return;
-    window.setTimeout(function() { //TODO: Check for video title change every 100 ms
-    if(window.location.href==window.lasturl)
-        return;
-        var cont=document.getElementById("watch7-subscription-container");
-        if(cont===null)
-            return;
-        cont.innerHTML+="<button type=\"button\" onClick=\"window.showLyrics()\" class=\"yt-uix-button yt-uix-button-size-default yt-uix-button-subscribed-branded no-icon-markup yt-uix-subscription-button yt-can-buffer hover-enabled\">Show lyrics</button>";
-        window.lasturl=window.location.href;
-    }, 2000); //TODO: Detect page load finish
+    window.setTimeout(Add, 100);
 } //TODO: Add for every platform, not just YouTube
 
 (function() {
