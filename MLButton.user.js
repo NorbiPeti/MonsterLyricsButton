@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         MonsterLyrics button
 // @namespace    https://github.com/NorbiPeti/
-// @version      0.4
+// @version      0.5
 // @description  Creates a button that searches for a lyrics video!
 // @author       NorbiPeti
-// @match        https://www.youtube.com/
-// @include      http://www.youtube.com/*
+// @match        https://www.youtube.com/watch*
+// @include      http://www.youtube.com/watch*
 // @include      https://www.twitch.tv/Monstercat*
 // @include      https://live.monstercat.com/*
 // @grant        none
@@ -19,20 +19,27 @@ function Add() {
     var title=document.getElementById("eow-title");
     if(title!==null)
         title=title.title;
+    if(title!==null)
+        window.lasttitle=title;
     if(document.getElementById("mlbutton")!==null)
         return;
-    if(window.location.href.indexOf("youtube.com")!=-1 && title==lasttitle && window.lasttries<10)
+    var cont=null;
+    if(window.location.href.indexOf("youtube.com")!=-1)
     {
-        window.addtries++;
-        window.setTimeout(Add, 100);
-        return;
+        if(title==lasttitle && window.lasttries<10)
+        {
+            window.addtries++;
+            window.setTimeout(Add, 100);
+            return;
+        }
+        cont=document.getElementById("watch7-subscription-container");
     }
-    var cont=document.getElementById("watch7-subscription-container");
     if(cont===null)
         cont=window.twitchmsg;
     if(cont===null)
         return;
-    window.lasttitle=window.twitchmsg.innerHTML.replace("Now Playing: ", "").replace(/ \- Listen now: .+/g, "");
+    if(window.twitchmsg!==null && window.twitchmsg!=="")
+        window.lasttitle=window.twitchmsg.innerHTML.replace("Now Playing: ", "").replace(/ \- Listen now: .+/g, "");
     cont.innerHTML+="<button type=\"button\" onClick=\"window.showLyrics()\" id=\"mlbutton\" class=\"yt-uix-button yt-uix-button-size-default yt-uix-button-subscribed-branded no-icon-markup yt-uix-subscription-button yt-can-buffer hover-enabled\">Lyrics video</button>";
     console.log("!");
     //window.lasturl=window.location.href; //TODO: Show Lyrics button
@@ -57,13 +64,12 @@ function AddIfChanged()
         return;
     if(document.getElementById("mlbutton")!==null)
         return;
-    console.log("Twitch");
     window.twitchmsg=Twitch;
     var cont=document.getElementById("watch7-subscription-container");
     if(cont===null && Twitch===null)
         return;
     window.setTimeout(Add, 100);
-} //TODO: Add for every platform, not just YouTube
+} //TODO: Add for every platform, not just YouTube and add tracklist support
 
 (function() {
     'use strict';
@@ -75,7 +81,7 @@ function AddIfChanged()
 window.showLyrics=function()
 {
     //var title=document.getElementById("eow-title").title;
-    var title=window.lastitle;
+    var title=window.lasttitle;
     title=encodeURI(title.replace(/\[[^\[\]]+\]/g, "")).replace("&", ""); //Tested on: Pegboard Nerds & NGHTMRE - Superstar (ft. Krewella)
     window.location.href="https://www.youtube.com/user/monstercatmedialyric/search?query="+title;
 };
