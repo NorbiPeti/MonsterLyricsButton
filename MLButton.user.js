@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MonsterLyrics button
 // @namespace    https://github.com/NorbiPeti/
-// @version      0.7
+// @version      0.8
 // @description  Creates a button that searches for a lyrics video!
 // @author       NorbiPeti
 // @match        https://www.youtube.com/*
@@ -74,7 +74,10 @@ function AddTwitch() {
     {
         if(typeof namecontTwitch[i] != 'undefined' && namecontTwitch[i].getElementsByClassName("from")[0].innerHTML=="Monstercat")
         {
-            twitchmsg=namecontTwitch[i].getElementsByClassName("message")[0];
+            var msg=namecontTwitch[i].getElementsByClassName("message")[0];
+            if(msg.innerHTML.indexOf("Now Playing: ")==-1)
+                continue;
+            twitchmsg=msg;
             break;
         }
     }
