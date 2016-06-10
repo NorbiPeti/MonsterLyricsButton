@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MonsterLyrics button
 // @namespace    https://github.com/NorbiPeti/
-// @version      0.6
+// @version      0.7
 // @description  Creates a button that searches for a lyrics video!
 // @author       NorbiPeti
 // @match        https://www.youtube.com/*
@@ -22,18 +22,6 @@ function AddYouTube(addtries) {
         var text=document.getElementById("eow-description").innerText;
         var regexp=/(\d{1,2}(?::\d{1,2})+) (.+) - (.+)/g;
         var currenttime=document.getElementsByClassName("video-stream html5-main-video")[0].currentTime;
-        /*var ctime=0;
-        if(currenttime.length==3)
-        {
-            ctime=currenttime[0]*3600;
-            ctime+=currenttime[1]*60;
-            ctime+=currenttime[2]*1;
-        }
-        else if(currenttime.length==2)
-        {
-            ctime=currenttime[0]*60;
-            ctime=currenttime[1]*1;
-        }*/
         var match = regexp.exec(text);
         var lastmatch=match;
         var lasttime=0;
@@ -80,6 +68,7 @@ function AddYouTube(addtries) {
 }
 
 function AddTwitch() {
+    var namecontTwitch=document.getElementsByClassName("chat-line");
     var twitchmsg=null;
     for(var i=namecontTwitch.length-1; i>=0; i--) //Reminder: Don't put i++ in a supposedly decrementing loop... It's hard to debug
     {
@@ -89,17 +78,22 @@ function AddTwitch() {
             break;
         }
     }
-    if((namecont===null || namecont.innerHTML.indexOf("Monstercat")==-1) && (Twitch===null))
-        return;
-    var cont=""; //TODO
+    var cont=document.getElementsByClassName("chat-buttons-container clearfix")[0];
     if(cont===null)
         return;
     if(twitchmsg!==null && twitchmsg!=="")
-        window.lasttitle=twitchmsg.innerHTML.replace("Now Playing: ", "").replace(/ \- Listen now: .+/g, "");
-    if(document.getElementById("mlbutton")!==null)
+    {
+        var txt=twitchmsg.innerHTML.replace("Now Playing: ", "").replace(/ \- Listen now: .+/g, "").split(" by ");
+        window.lasttitle=txt[1]+" - "+txt[0];
+    }
+    var mlbtn=document.getElementById("mlbutton");
+    if(mlbtn!==null)
+    {
+        if(window.lasttitle!=="" && window.lasttitle!==null)
+            mlbtn.disabled=0;
         return;
-    cont.innerHTML+="<button type=\"button\" onClick=\"window.showLyrics()\" id=\"mlbutton\" class=\"yt-uix-button yt-uix-button-size-default yt-uix-button-subscribed-branded no-icon-markup yt-uix-subscription-button yt-can-buffer hover-enabled\">Lyrics video</button>";
-    console.log("!");
+    }
+    cont.innerHTML+="<button type=\"button\" onClick=\"window.showLyrics()\" id=\"mlbutton\" class=\"button button--icon-only float-left\" disabled=\"1\">Lyrics video</button>";
 }
 
 function AddIfChanged() //...and update track text
@@ -122,5 +116,5 @@ window.showLyrics=function()
     //var title=document.getElementById("eow-title").title;
     var title=window.lasttitle;
     title=encodeURI(title.replace(/\[[^\[\]]+\]/g, "")).replace("&", ""); //Tested on: Pegboard Nerds & NGHTMRE - Superstar (ft. Krewella)
-    window.location.href="https://www.youtube.com/user/monstercatmedialyric/search?query="+title;
+    window.top.location.href="https://www.youtube.com/user/monstercatmedialyric/search?query="+title;
 };
