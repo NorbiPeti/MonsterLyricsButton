@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MonsterLyrics button
 // @namespace    https://github.com/NorbiPeti/
-// @version      0.8
+// @version      0.9
 // @description  Creates a button that searches for a lyrics video!
 // @author       NorbiPeti
 // @match        https://www.youtube.com/*
@@ -14,6 +14,9 @@
 window.lasttitle="";
 
 function AddYouTube(addtries) {
+    var namecont=document.getElementById("watch7-user-header");
+    if(namecont===null || namecont.innerHTML.indexOf("Monstercat")==-1)
+        return;
     var title=document.getElementById("eow-title");
     if(title!==null)
         title=title.title;
