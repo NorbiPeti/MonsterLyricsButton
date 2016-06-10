@@ -7,7 +7,6 @@ This userscript adds a button to Monstercat videos that searches for lyrics on t
 
 ## Usage
 ![Image](https://github.com/NorbiPeti/MonsterLyricsButton/raw/master/MLButtonImage.png)
-![Image](https://github.com/NorbiPeti/MonsterLyricsButton/raw/master/MLButtonTwitch2.jpg)
 
 Just click the "Lyrics video" button, it will then redirect you to a search page for the lyrics video.
 
