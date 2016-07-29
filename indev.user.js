@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MonsterLyrics button
 // @namespace    https://github.com/NorbiPeti/
-// @version      0.9
+// @version      0.10
 // @description  Creates a button that searches for a lyrics video!
 // @author       NorbiPeti
 // @match        https://www.youtube.com/*
@@ -13,7 +13,7 @@
 
 window.lasttitle="";
 
-function AddYouTube(addtries) {
+function AddYouTube(addtries) { //TODO: Handle [Official Lyric Video] (if from a mix, test if there is a lyric video on MC channel, if not, go to ML)
     var namecont=document.getElementById("watch7-user-header");
     if(namecont===null || namecont.innerHTML.indexOf("Monstercat")==-1)
         return;
