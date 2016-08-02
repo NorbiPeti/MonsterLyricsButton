@@ -13,6 +13,28 @@
 
 window.lasttitle="";
 
+function loadXMLDoc(url, ondone) {
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
+            if (xmlhttp.status == 200) {
+                var ret = xmlhttp.responseXML; //TODO: Browser extension
+                var wrapper= document.createElement('div');
+                wrapper.innerHTML= ret;
+                ret= wrapper.firstChild;
+                ondone(ret);
+            }
+            else {
+                alert('Error while retrieving page! '+xmlhttp.status);
+            }
+        }
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
 function AddYouTube(addtries) { //TODO: Handle [Official Lyric Video] (if from a mix, test if there is a lyric video on MC channel, if not, go to ML)
     var namecont=document.getElementById("watch7-user-header");
     if(namecont===null || namecont.innerHTML.indexOf("Monstercat")==-1)
@@ -43,7 +65,7 @@ function AddYouTube(addtries) { //TODO: Handle [Official Lyric Video] (if from a
                 time=spl[0]*60;
                 time=spl[1]*1;
             }
-            //console.log("Time: "+time+" CTime: "+currenttime+" LastTime: "+lasttime);
+            //console.log("Time: "+time+" CTime: "+currenttime+" LastTime: "+lasttime+" - "+lastmatch[2]+" - "+lastmatch[3]);
             if(time>currenttime && lasttime<currenttime)
                 break;
             lastmatch=match;
@@ -51,16 +73,11 @@ function AddYouTube(addtries) { //TODO: Handle [Official Lyric Video] (if from a
             match = regexp.exec(text);
         }
         title=lastmatch[2]+" - "+lastmatch[3]; //TODO
+        document.title=title;
     }
+    var cont=null;
     if(title!==null)
         window.lasttitle=title;
-    var cont=null;
-    if(title==window.lasttitle && addtries<10)
-    {
-        addtries++;
-        window.setTimeout(function(){AddYouTube(addtries);}, 100);
-        return;
-    }
     cont=document.getElementById("watch7-subscription-container");
     if(cont===null)
         return;
@@ -112,15 +129,18 @@ function AddIfChanged() //...and update track text
 
 (function() {
     'use strict';
-
     AddIfChanged();
     window.setInterval(AddIfChanged, 1000);
 })();
 
 window.showLyrics=function()
 {
-    //var title=document.getElementById("eow-title").title;
     var title=window.lasttitle;
     title=encodeURI(title.replace(/\[[^\[\]]+\]/g, "")).replace("&", ""); //Tested on: Pegboard Nerds & NGHTMRE - Superstar (ft. Krewella)
-    window.top.location.href="https://www.youtube.com/user/monstercatmedialyric/search?query="+title;
+    //window.top.location.href="https://www.youtube.com/user/monstercatmedialyric/search?query="+title;
+    loadXMLDoc("https://www.youtube.com/user/monstercatmedialyric/search?query="+title, function(response)
+               {
+        //response.getElementById("");
+        alert("Success!"); //TODO: Check search page for element ID and such
+    });
 };
